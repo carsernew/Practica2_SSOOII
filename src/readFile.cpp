@@ -24,19 +24,20 @@
  * PURPOSE          :       Lectura y division de las tareas por los hilos 
  * 
 ********************************************************************************************/
-void readFile();
+void readFile(std::string);
 
 int main(int argc, char const *argv[])
 {
-    readFile();
+    std::string file_name(argv[1]);
+    readFile(file_name);
     return 0;
 }
 
 
 
-void readFile(){
+void readFile(std::string file_name){
+
     std::string root="books/";
-    std::string file_name="prueba.txt";
     root+=file_name;
     std::ifstream file(root);
     
