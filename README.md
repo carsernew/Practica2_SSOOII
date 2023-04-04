@@ -1,2 +1,2 @@
 # Practica2-SSOOII
-Pactica de Carlos Fernández-Aparicio Margotón
+Practica de Carlos Fernández-Aparicio Margotón
