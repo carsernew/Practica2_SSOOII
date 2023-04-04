@@ -8,7 +8,8 @@
 #include <thread>
 #include <chrono>
 #include <ctime>
-#include<shared_mutex>
+#include <shared_mutex>
+#include <fstream>
 
 /*******************************************************************************************
  * 
@@ -23,3 +24,35 @@
  * PURPOSE          :       Lectura y division de las tareas por los hilos 
  * 
 ********************************************************************************************/
+void readFile();
+
+int main(int argc, char const *argv[])
+{
+    readFile();
+    return 0;
+}
+
+
+
+void readFile(){
+    std::string root="books/";
+    std::string file_name="prueba.txt";
+    root+=file_name;
+    std::ifstream file(root);
+    
+    if (!file){
+        std::cerr << " No se encontro el archivo "<<std::endl;
+        exit(EXIT_FAILURE);
+    }
+    std::string line;
+    
+    while (std::getline(file, line)) { 
+        std::cout << line << std::endl; 
+    }
+    
+
+    file.close(); // cerrar el archivo
+    exit(EXIT_SUCCESS);
+
+}
+
