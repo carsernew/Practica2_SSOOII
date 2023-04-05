@@ -26,6 +26,7 @@
  ********************************************************************************************/
 
 
+std::mutex semaforo;
 void readFile(std::string,int);
 void threadCreadtion(int);
 
@@ -33,23 +34,21 @@ int main(int argc, char const *argv[])
 {
     std::string file_name(argv[1]);
     //std::string search_word(argv[2]);
-    int n_threads = 5;
+    int n_threads = 4;
 
     //threadCreation(n_threads);
     readFile(file_name,n_threads);
     return 0;
 }
 
-void threadCreation(int n_threads)
+void threadCreation(int n_threads,int i)
 {
+    std::unique_lock<std::mutex> myLock(semaforo);
     std::vector<std::thread> threads(n_threads);
-    for (int i = 0; i < n_threads; i++) {
-        threads[i];  // Crea y asocia cada hilo a la función funcion_hilo
-    }
-
-    for (int i = 0; i < n_threads; i++) {
-        threads[i].join();  // Espera a que cada hilo termine su ejecución
-    }
+    threads[i];  
+    threads[i].join();  
+    std::cerr << i << std::endl;
+    myLock.unlock();
 
 }
 
@@ -63,6 +62,13 @@ void threadCalculating(int n_threads,int lines)
 
         std::cout << linesthread <<std::endl;
         std::cout << residue <<std::endl;
+        for (int i = 0; i < n_threads; i++)
+        {
+            
+            threadCreation(n_threads,i);
+            
+        }
+        
 
 
 
