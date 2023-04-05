@@ -12,48 +12,60 @@
 #include <fstream>
 
 /*******************************************************************************************
- * 
- * PROJECT          :       Practica 2 SSOO2                 
- * 
+ *
+ * PROJECT          :       Practica 2 SSOO2
+ *
  * PROGRAM NAME     :       main.cpp
- * 
+ *
  * AUTHOR           :       Carlos Fernandez-Aparicio Margoton
- * 
+ *
  * DATE CREATE      :       04/04/23
- * 
- * PURPOSE          :       Lectura y division de las tareas por los hilos 
- * 
-********************************************************************************************/
+ *
+ * PURPOSE          :       Lectura y division de las tareas por los hilos
+ *
+ ********************************************************************************************/
+
+
 void readFile(std::string);
+void threadCreadtion(int);
 
 int main(int argc, char const *argv[])
 {
     std::string file_name(argv[1]);
+    //std::string search_word(argv[2]);
+    //int n_threads = atoi(argv[3]);
+
+    //threadCreation(n_threads);
     readFile(file_name);
     return 0;
 }
 
+void threadCreation(int n_threads)
+{
+    std::vector<std::thread> threads(n_threads);
+}
 
+void readFile(std::string file_name)
+{
 
-void readFile(std::string file_name){
-
-    std::string root="books/";
-    root+=file_name;
+    std::string root = "books/";
+    root += file_name;
     std::ifstream file(root);
-    
-    if (!file){
-        std::cerr << " No se encontro el archivo "<<std::endl;
+    int count;
+
+    if (!file)
+    {
+        std::cerr << " No se encontro el archivo " << std::endl;
         exit(EXIT_FAILURE);
     }
     std::string line;
-    
-    while (std::getline(file, line)) { 
-        std::cout << line << std::endl; 
+
+    while (std::getline(file, line))
+    {
+        count++;
     }
-    
+    std::cout << "El numero de lineas es " << count <<std::endl;
 
     file.close(); // cerrar el archivo
     exit(EXIT_SUCCESS);
-
 }
-
