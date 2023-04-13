@@ -27,62 +27,49 @@
 
 
 std::mutex semaforo;
-void readFile(std::string,int);
+int redFile(std::string file_name,int);
 void threadCreadtion(int);
 
 int main(int argc, char const *argv[])
 {
     std::string file_name(argv[1]);
     //std::string search_word(argv[2]);
+    //std::int n_threads(argv[3]);
     int n_threads = 4;
+
+    if (argc != 4) 
+    {
+        std::cout << "No has puesto lo necesario para realizar la busqueda" <<std::endl;
+        exit(EXIT_FAILURE);
+    }
 
     //threadCreation(n_threads);
     readFile(file_name,n_threads);
     return 0;
 }
 
-void threadCreation(int n_threads,int i)
+void threadCreation(int n_threads,int i,std::string file_name)
 {
-    std::unique_lock<std::mutex> myLock(semaforo);
-    std::vector<std::thread> threads(n_threads);
-    threads[i];  
-    threads[i].join();  
-    std::cerr << i << std::endl;
-    myLock.unlock();
-
-}
-
-void threadCalculating(int n_threads,int lines)
-{
-    int linesthread;
-    int residue;
-    if(n_threads>0){
-        linesthread=lines/n_threads;
-        residue=lines%n_threads;
-
-        std::cout << linesthread <<std::endl;
-        std::cout << residue <<std::endl;
-        for (int i = 0; i < n_threads; i++)
-        {
-            
-            threadCreation(n_threads,i);
-            
-        }
-        
-
-
-
-    }else{
-        std::cerr << " No existen ningun hilo " << std::endl;
+    int n_lines = readFile(file_name,n_threads);
+    if(n_lines < n_threads){
+        std::cout<< "Linas insuficientes para la cantidad de hilos" <<std::endl;
         exit(EXIT_FAILURE);
     }
-    
 
+    int lines_per_thread = n_lines / n_threads;
+
+    for (int i=0; i<n_threads; i++)
+    {
+        int begin = i*lines_per_thread;
+        int end = (begin + lines_per_thread) - 1;
+
+    }
 }
 
-void readFile(std::string file_name, int n_threads)
-{
 
+
+int readFile(std::string file_name, int n_threads)
+{
     std::string root = "books/";
     root += file_name;
     std::ifstream file(root);
@@ -101,8 +88,8 @@ void readFile(std::string file_name, int n_threads)
     }
     std::cout << "El numero de lineas es " << count <<std::endl;
 
-    threadCalculating(n_threads,count);
-
     file.close(); // cerrar el archivo
-    exit(EXIT_SUCCESS);
+
+    return count;
+    
 }
