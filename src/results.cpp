@@ -16,7 +16,7 @@
  *
  * PROJECT          :       Practica 2 SSOO2
  *
- * PROGRAM NAME     :       main.cpp
+ * PROGRAM NAME     :       results.cpp
  *
  * AUTHOR           :       Carlos Fernandez-Aparicio Margoton
  *
