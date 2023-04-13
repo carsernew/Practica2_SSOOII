@@ -43,12 +43,12 @@ int main(int argc, char const *argv[])
         exit(EXIT_FAILURE);
     }
 
-    //threadCreation(n_threads);
+    //threadCreation(n_threads,file_name);
     readFile(file_name,n_threads);
     return 0;
 }
 
-void threadCreation(int n_threads,int i,std::string file_name)
+void threadCreation(int n_threads,std::string file_name)
 {
     int n_lines = readFile(file_name,n_threads);
     if(n_lines < n_threads){
