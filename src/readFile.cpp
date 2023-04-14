@@ -29,11 +29,9 @@
 
 
 std::mutex semaforo;
-int redFile(std::string file_name,int);
-void threadCreadtion(int);
-
+int readFile(std::string file_name,int n_threads);
+void threadCreation(int n_threads,std::string file_name,char *word);
 std::vector<std::thread> v_threads;
-
 std::vector<wordfinder> v_searchers;
 
 int main(int argc, char const *argv[])
@@ -42,18 +40,14 @@ int main(int argc, char const *argv[])
     const char* search_word(argv[2]);
     int n_threads(std::stoi(argv[3]));
     char* word = const_cast<char*>(search_word);
-    
 
-    if (argc != 3) 
+    if (argc != 4) 
     {
         std::cout << "No has puesto lo necesario para realizar la busqueda" <<std::endl;
         exit(EXIT_FAILURE);
     }
 
-    threadCreation(n_threads,file_name,word);
-
-   
-    readFile(file_name,n_threads);
+    threadCreation(n_threads,"./books/"+file_name,word);
 
     return 0;
 }
@@ -61,6 +55,7 @@ int main(int argc, char const *argv[])
 void threadCreation(int n_threads,std::string file_name,char *word)
 {
     int n_lines = readFile(file_name,n_threads);
+    std::cout<< *word <<std::endl;
     if(n_lines < n_threads){
         std::cout<< "Linas insuficientes para la cantidad de hilos" <<std::endl;
         exit(EXIT_FAILURE);
@@ -82,10 +77,8 @@ void threadCreation(int n_threads,std::string file_name,char *word)
 
 int readFile(std::string file_name, int n_threads)
 {
-    std::string root = "books/";
-    root += file_name;
-    std::ifstream file(root);
-    int count;
+    std::ifstream file(file_name);
+    int count=0;
 
     if (!file)
     {
@@ -93,7 +86,6 @@ int readFile(std::string file_name, int n_threads)
         exit(EXIT_FAILURE);
     }
     std::string line;
-
     while (std::getline(file, line))
     {
         count++;
@@ -106,3 +98,15 @@ int readFile(std::string file_name, int n_threads)
     return count;
     
 }
+void printResults()
+{
+    std::cout<< "[Hilo principal] Vamos a imprimir \n" <<std::endl;
+   
+    for (int i = 0; i < v_searchers.size(); i++)
+    {
+        v_searchers[i].teachResults();
+    }
+
+    
+}
+
