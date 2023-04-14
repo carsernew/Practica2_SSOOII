@@ -27,6 +27,7 @@
  ********************************************************************************************/
 
 
+
 class InfoResult
 {
 public:
@@ -35,7 +36,7 @@ public:
 
     std::string toString() const
     {
-        return "line " + std::to_string(lineNumber) + " :: ... " + bef_Word + " " + word + (af_Word[0] == ',' ? "" : " ") + af_Word + " ...";
+        return "linea " + std::to_string(lineNumber) + " :: ... " + bef_Word + " " + word + (af_Word[0] == ',' ? "" : " ") + af_Word + " ...";
     }
 
 private:
