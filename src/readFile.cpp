@@ -55,8 +55,6 @@ int main(int argc, char const *argv[])
    
     readFile(file_name,n_threads);
 
-    std::cout<< "[THREAD MAIN] Child threads have finished. Printing results.\n" <<std::endl;
-
     return 0;
 }
 
