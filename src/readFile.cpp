@@ -11,6 +11,8 @@
 #include <shared_mutex>
 #include <fstream>
 
+#include "wordfinder.cpp"
+
 /*******************************************************************************************
  *
  * PROJECT          :       Practica 2 SSOO2
@@ -30,25 +32,35 @@ std::mutex semaforo;
 int redFile(std::string file_name,int);
 void threadCreadtion(int);
 
+std::vector<std::thread> v_threads;
+
+std::vector<wordfinder> v_searchers;
+
 int main(int argc, char const *argv[])
 {
     std::string file_name(argv[1]);
-    //std::string search_word(argv[2]);
-    //std::int n_threads(argv[3]);
-    int n_threads = 4;
+    const char* search_word(argv[2]);
+    int n_threads(std::stoi(argv[3]));
+    char* word = const_cast<char*>(search_word);
+    
 
-    if (argc != 4) 
+    if (argc != 3) 
     {
         std::cout << "No has puesto lo necesario para realizar la busqueda" <<std::endl;
         exit(EXIT_FAILURE);
     }
 
-    //threadCreation(n_threads,file_name);
+    threadCreation(n_threads,file_name,word);
+
+   
     readFile(file_name,n_threads);
+
+    std::cout<< "[THREAD MAIN] Child threads have finished. Printing results.\n" <<std::endl;
+
     return 0;
 }
 
-void threadCreation(int n_threads,std::string file_name)
+void threadCreation(int n_threads,std::string file_name,char *word)
 {
     int n_lines = readFile(file_name,n_threads);
     if(n_lines < n_threads){
@@ -62,10 +74,12 @@ void threadCreation(int n_threads,std::string file_name)
     {
         int begin = i*lines_per_thread;
         int end = (begin + lines_per_thread) - 1;
+        v_searchers.push_back(wordfinder(i, begin, end));
 
     }
+    for (int i=0; i<n_threads; i++)
+        v_threads.push_back(std::thread(std::ref(v_searchers[i]), file_name, word));
 }
-
 
 
 int readFile(std::string file_name, int n_threads)
@@ -87,6 +101,7 @@ int readFile(std::string file_name, int n_threads)
         count++;
     }
     std::cout << "El numero de lineas es " << count <<std::endl;
+
 
     file.close(); // cerrar el archivo
 
